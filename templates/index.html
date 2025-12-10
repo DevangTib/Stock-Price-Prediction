@@ -1,0 +1,59 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        form { margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 60%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        img { margin-top: 20px; max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h2>Stock Movement Predictor</h2>
+
+    <form method="post" action="/predict">
+        <label for="company">Select Company:</label>
+        <select name="company" id="company" required>
+            {% for comp in companies %}
+                <option value="{{ comp }}">{{ comp }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="start_date">Start Date (YYYY-MM-DD):</label>
+        <input type="text" name="start_date" id="start_date" required>
+        <br><br>
+
+        <label for="end_date">End Date (YYYY-MM-DD):</label>
+        <input type="text" name="end_date" id="end_date" required>
+        <br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if predictions %}
+        <h3>Predictions</h3>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Prediction</th>
+            </tr>
+            {% for date, label in predictions %}
+                <tr>
+                    <td>{{ date }}</td>
+                    <td>{{ label }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if plot_data %}
+        <h3>Prediction Graph</h3>
+        <img src="data:image/png;base64,{{ plot_data }}" alt="Prediction Plot">
+    {% endif %}
+</body>
+</html>
